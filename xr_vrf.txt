@@ -1,0 +1,51 @@
+-class IosToXrConverter
+
+#convert specific vrf
+#convert specific interface
+#convert specific router ospf
+#convert specific rotuer static
+#convert specific router bgp
+
+
+		
+
+
+		
+-class IosVrfConfigParser 
+
+IosVrfConfigParser.getVrfAttrib(config_file,vrf_name)
+IosVrfConfigParser.getVrfNameList(config_file) return list vrf name
+IosVrfConfigParser.getAllVrfAtrrib(config_file)
+IosVrfConfigParser.getVrfRd(config_file,vrf_name)
+IosVrfConfigParser.getVrfExportMap(config_file,vrf_name)
+IosVrfConfigParser.getVrfImportMap(config_file,vrf_name)
+IosVrfConfigParser.getVrfName(config_file,vrf_name)
+
+
+
+*************vrf utility*****************
+#check conf_file has vrf
+#get vrf list from conf_file
+#get sepecific vrf config by name
+#get rd  from specific vrf name
+#get route-target from specific vrf
+#get all vrf ip confing from conf_file
+
+
+
+***********interface utility*****************
+#get interface list conf_file
+#get interface attrib from conf_file
+#get interface list from 
+
+
+-class IosToXr(config_file_before)
+#check conf_file
+
+
+
+
+
+
+
+

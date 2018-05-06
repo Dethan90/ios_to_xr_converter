@@ -1,0 +1,182 @@
+vrf ADIRA-FINANCE
+ address-family ipv4 unicast
+ export route-policy  NMS-VPN
+ export route-target  65535:50431801
+ import route-target  65535:50431801
+ import route-target  4800:1000
+!
+!
+interface GigabitEthernet0/1.504
+ description 2015003651-ADIRA FINANCE-1024K-PRIORITY-GPON-MKSKLA
+ encapsulation dot1Q 504
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.5.153 255.255.255.252
+ service-policy input P-1024K
+ service-policy output SHAPE1024K
+!
+interface GigabitEthernet0/1.523
+ description 2013006167-ADIRA DINAMIKA MULTI FINANCE-2048K-PRIORITY-GPON-MKSKLA
+ encapsulation dot1Q 523
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.29.89 255.255.255.252
+!
+interface GigabitEthernet0/1.160615
+ description 2015001999-ADIRA DINAMIKA FINANCE-256K-PRIORITY-HARIF-MAMISAT
+ encapsulation dot1Q 1606 second-dot1q 15
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.54.89 255.255.255.252
+!
+interface GigabitEthernet0/1.1601449
+ description 2014004489-ADIRA FINANCE WUA WUA-1024K-PRIORITY-GPON-KNDBPD
+ encapsulation dot1Q 1601 second-dot1q 449
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.42.165 255.255.255.252
+!
+interface GigabitEthernet0/1.1602157
+ description 2014001529-ADIRA DINAMIKA MULTI FINANCE PALU-1024K-PRIORITY-BWA3.3-PLUPMA
+ encapsulation dot1Q 1602 second-dot1q 157
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.36.249 255.255.255.252
+!
+interface GigabitEthernet0/1.1603212
+ description 2014001527-ADIRA DINAMIKA MULTI FINANCE-1024K-PRIORITY-HARIF-MND
+ encapsulation dot1Q 1603 second-dot1q 212
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.36.233 255.255.255.252
+!
+interface GigabitEthernet0/1.1620136
+ description 2015001997-ADIRA DINAMIKA PARE-512K-BWA3.3-PARE
+ encapsulation dot1Q 1620 second-dot1q 136
+ vrf ADIRA-FINANCE
+ shutdown
+ ipv4 address 1.2.53.221 255.255.255.252
+!
+router bgp 45730
+!
+vrf ADIRA-FINANCE
+ rd 65535:50431801
+ address-family ipv4 unicast
+  redistribute connected
+  redistribute static
+  default-information originate
+ !
+   neighbor 1.2.5.154
+   remote-as 65350
+   local-as 65535 no-prepend
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.29.90
+   remote-as 65321
+   local-as 65535 no-prepend
+   description 2013006167
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.36.234
+   remote-as 65302
+   local-as 65535 no-prepend
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.36.250
+   remote-as 65342
+   local-as 65535 no-prepend
+   description 2014001529
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.42.166
+   remote-as 65301
+   local-as 65535 no-prepend
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.53.222
+   remote-as 65345
+   local-as 65535 no-prepend
+   description 2015001997
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+   neighbor 1.2.54.90
+   remote-as 65344
+   local-as 65535 no-prepend
+   description 2015001999
+   address-family ipv4 unicast
+    route-policy pass-all in
+    route-policy pass-all out
+    send-extended-community-ebgp
+    soft-reconfiguration inbound
+   !
+
+router static
+ vrf ADIRA-FINANCE
+ address-family ipv4 unicast
+ 10.70.215.0 255.255.255.0 GigabitEthernet0/1.1620136 1.2.53.222
+ 10.71.114.0 255.255.255.0 GigabitEthernet0/1.1601449 1.2.42.166
+!
+=============================================================================
+!
+vrf AIRASIA
+ address-family ipv4 unicast
+ export route-policy NMS-VPN
+ export route-target  65535:88800001
+ import route-target  65535:88800001
+ import route-target  4800:1000
+!
+!
+interface GigabitEthernet0/3.3887
+ description 2016010730-AIRASIA MAKASSAR-1024K-ETHCABLE-PRIORITY-MKSBBH
+ encapsulation dot1Q 38 second-dot1q 87
+ vrf AIRASIA
+ shutdown
+ ipv4 address 1.2.65.225 255.255.255.252
+ ipv4 mtu 1500
+!
+router bgp 45730
+!
+vrf AIRASIA
+ rd 65535:88800001
+ address-family ipv4 unicast
+  redistribute connected
+  redistribute static
+  redistribute ospf 3 match internal external
+!
+router ospf 3
+ vrf AIRASIA
+  domain-id type 0005 value 888000010200
+  router-id 1.2.65.225
+  redistribute bgp 45730
+ area 20
+  interface GigabitEthernet0/3.3887
+    mtu-ignore enable
+!
+!
+
+
+

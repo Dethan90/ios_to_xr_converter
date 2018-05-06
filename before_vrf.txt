@@ -1,0 +1,18 @@
+ip vrf ADIRA-FINANCE
+ rd 65535:50431801
+ export map NMS-VPN
+ route-target export 65535:50431801
+ route-target import 65535:50431801
+ route-target import 4800:1000
+!
+ip vrf AIRASIA
+ rd 65535:88800001
+ export map NMS-VPN
+ export map NMS_VPN2
+ import map NMS_XXX
+ route-target export 65535:88800001
+ route-target import 65535:88800001
+ route-target import 4800:1000
+!
+
+

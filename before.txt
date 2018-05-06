@@ -1,0 +1,138 @@
+ip vrf ADIRA-FINANCE
+ rd 65535:50431801
+ export map NMS-VPN
+ route-target export 65535:50431801
+ route-target import 65535:50431801
+ route-target import 4800:1000
+!
+ip vrf AIRASIA
+ rd 65535:88800001
+ export map NMS-VPN
+ export map NMS-VPN
+ route-target export 65535:88800001
+ route-target import 65535:88800001
+ route-target import 4800:1000
+!
+!
+interface GigabitEthernet0/1.504
+ description 2015003651-ADIRA FINANCE-1024K-PRIORITY-GPON-MKSKLA
+ encapsulation dot1Q 504
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.5.153 255.255.255.252
+ service-policy input P-1024K
+ service-policy output SHAPE1024K
+!
+interface GigabitEthernet0/1.523
+ description 2013006167-ADIRA DINAMIKA MULTI FINANCE-2048K-PRIORITY-GPON-MKSKLA
+ encapsulation dot1Q 523
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.29.89 255.255.255.252
+!
+interface GigabitEthernet0/1.160615
+ description 2015001999-ADIRA DINAMIKA FINANCE-128K-PRIORITY-HARIF-MAMISAT
+ encapsulation dot1Q 1606 second-dot1q 15
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.54.89 255.255.255.252
+!
+interface GigabitEthernet0/1.1601449
+ description 2014004489-ADIRA FINANCE WUA WUA-1024K-PRIORITY-GPON-KNDBPD
+ encapsulation dot1Q 1601 second-dot1q 449
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.42.165 255.255.255.252
+!
+interface GigabitEthernet0/1.1602157
+ description 2014001529-ADIRA DINAMIKA MULTI FINANCE PALU-1024K-PRIORITY-BWA3.3-PLUPMA
+ encapsulation dot1Q 1602 second-dot1q 157
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.36.249 255.255.255.252
+!
+interface GigabitEthernet0/1.1603212
+ description 2014001527-ADIRA DINAMIKA MULTI FINANCE-1024K-PRIORITY-HARIF-MND
+ encapsulation dot1Q 1603 second-dot1q 212
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.36.233 255.255.255.252
+!
+interface GigabitEthernet0/1.1620136
+ description 2015001997-ADIRA DINAMIKA PARE-512K-BWA3.3-PARE
+ encapsulation dot1Q 1620 second-dot1q 136
+ ip vrf forwarding ADIRA-FINANCE
+ ip address 1.2.53.221 255.255.255.252
+!
+interface GigabitEthernet0/1.1627130
+ description 2015003646-ADIRA FINANCE-1024K-GPON-PRITORITY-MND
+ encapsulation dot1Q 1627 second-dot1q 130
+ ip vrf forwarding ADIRA-FINANCE
+ shutdown
+ ip address 1.2.56.117 255.255.255.252
+!
+interface GigabitEthernet0/3.3887
+ description 2016010730-AIRASIA MAKASSAR-1024K-ETHCABLE-PRIORITY-MKSBBH
+ encapsulation dot1Q 38 second-dot1q 87
+ ip vrf forwarding AIRASIA
+ ip address 1.2.65.225 255.255.255.252
+ ip mtu 1500
+ ip ospf mtu-ignore
+!
+!
+router ospf 150 vrf AIRASIA
+ router-id 1.2.65.225
+ log-adjacency-changes
+ redistribute bgp 65535 subnets
+ network 1.2.65.224 0.0.0.3 area 20
+!
+router bgp 65535
+!
+address-family ipv4 vrf ADIRA-FINANCE
+  redistribute connected
+  redistribute static
+  neighbor 1.2.5.154 remote-as 65350
+  neighbor 1.2.5.154 activate
+  neighbor 1.2.5.154 send-community both
+  neighbor 1.2.5.154 soft-reconfiguration inbound
+  neighbor 1.2.29.90 remote-as 65321
+  neighbor 1.2.29.90 description 2013006167
+  neighbor 1.2.29.90 activate
+  neighbor 1.2.29.90 send-community both
+  neighbor 1.2.29.90 soft-reconfiguration inbound
+  neighbor 1.2.36.234 remote-as 65302
+  neighbor 1.2.36.234 activate
+  neighbor 1.2.36.234 send-community both
+  neighbor 1.2.36.234 soft-reconfiguration inbound
+  neighbor 1.2.36.250 remote-as 65342
+  neighbor 1.2.36.250 description 2014001529
+  neighbor 1.2.36.250 activate
+  neighbor 1.2.36.250 send-community both
+  neighbor 1.2.36.250 soft-reconfiguration inbound
+  neighbor 1.2.42.166 remote-as 65301
+  neighbor 1.2.42.166 activate
+  neighbor 1.2.42.166 send-community both
+  neighbor 1.2.42.166 soft-reconfiguration inbound
+  neighbor 1.2.53.222 remote-as 65345
+  neighbor 1.2.53.222 description 2015001997
+  neighbor 1.2.53.222 activate
+  neighbor 1.2.53.222 send-community both
+  neighbor 1.2.53.222 soft-reconfiguration inbound
+  neighbor 1.2.54.90 remote-as 65344
+  neighbor 1.2.54.90 description 2015001999
+  neighbor 1.2.54.90 activate
+  neighbor 1.2.54.90 send-community both
+  neighbor 1.2.54.90 soft-reconfiguration inbound
+  neighbor 1.2.56.118 remote-as 65367
+  neighbor 1.2.56.118 description 2015003646
+  neighbor 1.2.56.118 activate
+  neighbor 1.2.56.118 send-community both
+  neighbor 1.2.56.118 soft-reconfiguration inbound
+ exit-address-family
+!
+address-family ipv4 vrf AIRASIA
+  redistri\bute connected
+  redistribute static
+  redistribute ospf 150 vrf AIRASIA match internal external 1 external 2
+ exit-address-family
+!
+ip route vrf ADIRA-FINANCE 10.70.215.0 255.255.255.0 1.2.53.222
+ip route vrf ADIRA-FINANCE 10.71.114.0 255.255.255.0 1.2.42.166
+!
+!
+sempak
+!

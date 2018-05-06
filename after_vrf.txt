@@ -1,0 +1,14 @@
+vrf ADIRA-FINANCE
+ address-family ipv4 unicast
+ export route-policy  NMS-VPN
+ export route-target  65535:50431801
+ import route-target  65535:50431801
+ import route-target  4800:1000
+!
+vrf AIRASIA
+ address-family ipv4 unicast
+ export route-policy NMS-VPN
+ export route-target  65535:88800001
+ import route-target  65535:88800001
+ import route-target  4800:1000
+!
