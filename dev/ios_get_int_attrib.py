@@ -1,9 +1,6 @@
 #utility library for get data from ios config
 
 from ciscoconfparse import CiscoConfParse#Function check ios
-#
-def ios_has_vrf(conf_file):
- parse = CiscoConfParse("before.txt")
 
 #function get interface attribute
 def ios_get_int_attrib(conf_file,int):
